@@ -1,0 +1,40 @@
+Insert into product (name, vital, product_type, price) values 
+('пенталгин', true, '{«успокаивающее», «хохорошее», «таблетка»}', 100);
+
+
+
+# Процедура добавления продукта с рецептом
+
+CREATE FUNCTION add_product(name text, vital boolean, product_type varchar[], prescription varchar[], price int)
+RETURNS text AS $$
+plan = plpy.prepare('INSERT INTO product(name, vital, product_type, prescription, price) VALUES ($1, $2, $3, $4, $5)', ["text", "boolean","varchar[]","varchar[]","int"])
+plpy.execute(plan, [name, vital, product_type, prescription, price])
+return "product added"
+$$ LANGUAGE plpython3u;
+
+
+# Процедура добавления продукта без рецепта
+CREATE FUNCTION add_product(name text, vital boolean, product_type varchar[], price int)
+RETURNS text AS $$
+plan = plpy.prepare('INSERT INTO product(name, vital, product_type, price) VALUES ($1, $2, $3, $4)', ["text", "boolean","varchar[]","int"])
+plpy.execute(plan, [name, vital, product_type, price])
+return "product added!"
+$$ LANGUAGE plpython3u;
+
+
+CREATE FUNCTION delete_product(id int)
+RETURNS text AS $$
+x = input()
+plan = plpy.prepare('DELETE FROM product WHERE id = $1', ["int"])
+plpy.execute(plan, [id])
+return "product delete!"
+$$ LANGUAGE plpython3u;
+
+
+# Процедура полнного обновления элемента базы данных
+CREATE FUNCTION change(id int, name varchar, vital boolean, product_type varchar[], prescription varchar[], price int)
+RETURNS text AS $$
+plan = plpy.prepare('UPDATE product SET name = $2, vital = $3, product_type = $4, prescription = $5, price = $6 WHERE id = $1', ["int", "varchar", "boolean", "varchar[]", "varchar[]", "int"])
+plpy.execute(plan, [id, name, vital, product_type, prescription, price])
+return "Update is ready!"
+$$ LANGUAGE plpython3u;
