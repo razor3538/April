@@ -1,0 +1,31 @@
+# 1
+
+SELECT product_type, AVG(price) FROM product GROUP BY product_type ORDER BY avg DESC;
+
+# 2
+
+select id, name, vital, product_type, prescription, price from 
+	(select product from selling where city @> '{"Краснодар"}' and time >= '2019-5-01' and time < '2019-06-01' order by count DESC limit 10) as a 
+		inner join product on a.product = product.id;
+
+# 3
+
+select a.id, name, vital, product_type, prescription, price, count(a.pharmacy) as unique_pharmacy_count from 
+	(select distinct product as id, pharmacy from selling where time >= '2019-01-01' and time < '2020-01-01' group by product, pharmacy) as a 
+		inner join product on a.id = product.id group by a.id, name, vital, product_type, prescription, price;
+
+# 4
+
+
+select name, vital, product_type, prescription, price from 
+	(select product from selling where '{Краснодар}' not in (city) and time >= '2018-01-01' and time < '2019-01-01' group by product) as product_id 
+		inner join product on product_id.product = product.id;
+
+# 5
+
+select unnest(city), count(name) from pharmacy group by city order by count DESC limit 3;
+
+# 6
+
+select time, pharmacy, city, product, price from (select * from selling where time >= '2019-01-01' and time < '2020-01-01' and count >= 10) as a order by price DESC limit 1;
+

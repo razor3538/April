@@ -1,0 +1,7 @@
+
+# Запрос на изменение знака с отрицательного на положительный
+update selling set price = price * -1 where time >= '2019-01-01' and time < '2019-02-01' and city @> '{Ставрополь}' and price < 0;
+
+
+# Запрос на удаление дублей из таблицы
+delete from selling where ctid not in (select max(ctid) from selling group by selling.*);

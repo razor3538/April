@@ -1,0 +1,28 @@
+﻿create table product(
+	id serial primary key,
+	name varchar(100) NOT NULL UNIQUE,
+	vital boolean NOT NULL,
+	product_type varchar[] NOT NULL,
+	prescription text[] NULL,
+	price numeric (10, 2) NOT NULL
+	);
+	
+	create index product_id_index on product(id);
+
+create table pharmacy(
+	id serial primary key,
+	name varchar(100) NOT NULL,
+	city varchar[] NOT NULL,
+	pharmacy_type varchar[] NOT NULL
+	);
+	create index pharmacy_id_index on pharmacy(id);
+
+create table selling(
+	id serial primary key,
+	time timestamp NOT NULL,
+	pharmacy integer references pharmacy(id),
+	product integer references product(id),
+	count integer NOT NULL,
+	price numeric(10, 2) NOT NULL
+	);
+	create index selling_id_index on selling(id);
