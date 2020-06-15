@@ -1,4 +1,4 @@
-﻿create table product(
+create table product(
 	id serial primary key,
 	name varchar(100) NOT NULL UNIQUE,
 	vital boolean NOT NULL,
@@ -15,6 +15,7 @@ create table pharmacy(
 	city varchar[] NOT NULL,
 	pharmacy_type varchar[] NOT NULL
 	);
+
 	create index pharmacy_id_index on pharmacy(id);
 
 create table selling(
@@ -25,4 +26,6 @@ create table selling(
 	count integer NOT NULL,
 	price numeric(10, 2) NOT NULL
 	);
+	
 	create index selling_id_index on selling(id);
+	create index selling_price_index in selling(price);

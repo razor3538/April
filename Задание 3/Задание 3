@@ -27,5 +27,5 @@ select unnest(city), count(name) from pharmacy group by city order by count DESC
 
 # 6
 
-select time, pharmacy, city, product, price from (select * from selling where time >= '2019-01-01' and time < '2020-01-01' and count >= 10) as a order by price DESC limit 1;
+select a.time, a.pharmacy, a.city, a.price, product.name as product from (select time, pharmacy.name as pharmacy, selling.city, price, product from selling inner join pharmacy on selling.pharmacy = pharmacy.id where time >= '2019-01-01' and time < '2020-01-01' and count >= 10 order by price DESC limit 1) as a inner join product on a.product = product.id;
 
